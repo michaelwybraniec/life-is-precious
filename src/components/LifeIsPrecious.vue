@@ -8,6 +8,7 @@
         v-model.number="myLife.age"
         max="110"
         class="hide-while-printing"
+        style="width: 30px"
       /><br class="hide-while-printing" />
       <label for="lifespan">Desired lifespan (years): </label>
       <input
@@ -16,6 +17,7 @@
         v-model.number="myLife.desiredLifeSpan"
         max="110"
         disabled
+        style="width: 30px"
       />
     </div>
     <div class="center">
@@ -166,8 +168,8 @@ function printPage() {
   margin-bottom: 5px; /* Apply additional left margin for every 4th chunk */
 }
 .week-box {
-  width: 15px;
-  height: 15px;
+  width: 12px;
+  height: 12px;
   margin: 1px;
   border: 1px solid #5f985e;
 }
