@@ -1,14 +1,5 @@
 <template>
   <div class="container">
-    <div class="language-selector">
-      <select v-model="currentLocale" @change="changeLanguage">
-        <option value="en">🇺🇸 English</option>
-        <option value="pl">🇵🇱 Polski</option>
-        <option value="es">🇪🇸 Español</option>
-        <option value="fr">🇫🇷 Français</option>
-        <option value="hi">🇮🇳 हिंदी</option>
-      </select>
-    </div>
     <div class="left">
       <label for="age" class="hide-while-printing">{{ $t('yourAge') }}</label>
       <input
@@ -45,6 +36,15 @@
   <button @click="printPage" class="hide-while-printing print-button">
     Print
   </button>
+  <div class="language-selector">
+      <select v-model="currentLocale" @change="changeLanguage">
+        <option value="en">🇺🇸 English</option>
+        <option value="pl">🇵🇱 Polski</option>
+        <option value="es">🇪🇸 Español</option>
+        <option value="fr">🇫🇷 Français</option>
+        <option value="hi">🇮🇳 हिंदी</option>
+      </select>
+    </div>
   <div id="checkboxes">
     <div v-for="(chunk, row) in weeksChunks" :key="row" class="row">
       <div class="row-number">{{ row + 1 }}</div>
@@ -128,7 +128,6 @@ function printPage() {
 }
 
 const { t, locale } = useI18n()
-
 const currentLocale = ref(locale.value)
 
 function changeLanguage() {

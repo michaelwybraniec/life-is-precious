@@ -50,6 +50,7 @@ const messages = {
 };
 
 const i18n = createI18n({
+  legacy: false,
   locale: 'en', // default locale
   fallbackLocale: 'en', // fallback locale
   messages, // set locale messages
