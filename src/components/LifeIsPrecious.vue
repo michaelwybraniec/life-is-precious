@@ -1,7 +1,16 @@
 <template>
   <div class="container">
+    <div class="language-selector">
+      <select v-model="currentLocale" @change="changeLanguage">
+        <option value="en">🇺🇸 English</option>
+        <option value="pl">🇵🇱 Polski</option>
+        <option value="es">🇪🇸 Español</option>
+        <option value="fr">🇫🇷 Français</option>
+        <option value="hi">🇮🇳 हिंदी</option>
+      </select>
+    </div>
     <div class="left">
-      <label for="age" class="hide-while-printing">Your age: </label>
+      <label for="age" class="hide-while-printing">{{ $t('yourAge') }}</label>
       <input
         type="number"
         id="age"
@@ -10,7 +19,7 @@
         class="hide-while-printing"
         style="width: 40px"
       /><br class="hide-while-printing" />
-      <label for="lifespan">Desired lifespan (years): </label>
+      <label for="lifespan">{{ $t('desiredLifespan') }}</label>
       <input
         type="number"
         id="lifespan"
@@ -21,14 +30,14 @@
       />
     </div>
     <div class="center">
-      <b>LIFE IS PRECIOUS<br />MAKE IT MORE MEANINGFUL</b>
+      <b>{{ $t('lifeIsPrecious') }}</b>
     </div>
     <div class="right">
       <p>
-        {{ myLife.desiredLifeSpan }} years x {{ weeksPerYear }} weeks/year =
-        {{ totalWeeksOfLife }} weeks.<br />
+        {{ myLife.desiredLifeSpan }} {{ $t('weeks') }} x {{ weeksPerYear }} {{ $t('weeks') }}/{{ $t('weeks') }} =
+        {{ totalWeeksOfLife }} {{ $t('weeks') }}.<br />
         <span class="hide-while-printing">
-          You have lived <b>{{ lifePercentage.toFixed(2) }}%</b> of your life.
+          {{ $t('youHaveLived') }} <b>{{ lifePercentage.toFixed(2) }}%</b> {{ $t('percentOfYourLife') }}
         </span>
       </p>
     </div>
@@ -54,12 +63,13 @@
     </div>
   </div>
   <footer class="footer-quote">
-    "LIFE IS NOW" / All rights reserved by ONE-FRONT.
+    "{{ $t('lifeIsNow') }}"
   </footer>
 </template>
 
 <script setup lang="ts">
 import { computed, ref, Ref, watch } from 'vue'
+import { useI18n } from 'vue-i18n'
 
 interface LifeData {
   age: number
@@ -116,6 +126,14 @@ watch(
 function printPage() {
   window.print()
 }
+
+const { t, locale } = useI18n()
+
+const currentLocale = ref(locale.value)
+
+function changeLanguage() {
+  locale.value = currentLocale.value
+}
 </script>
 
 <style scoped>
@@ -125,6 +143,27 @@ function printPage() {
   align-items: center;
   padding-bottom: 10px;
   align-items: center;
+}
+
+.language-selector {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  margin-bottom: 20px;
+  padding: 10px;
+}
+
+.language-selector select {
+  padding: 5px;
+  font-size: 14px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.language-selector select:focus {
+  outline: none;
+  border-color: #5f985e;
 }
 
 .left {
