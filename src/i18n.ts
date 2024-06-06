@@ -5,7 +5,8 @@ const messages = {
   en: {
     yourAge: "Your age:",
     desiredLifespan: "Desired lifespan (years):",
-    lifeIsPrecious: "LIFE IS PRECIOUS\nMAKE IT MORE MEANINGFUL",
+    lifeIsPrecious: "LIFE IS PRECIOUS",
+    makeItMoreMeaningful: "MAKE IT MORE MEANINGFUL",
     weeks: "weeks",
     youHaveLived: "You have lived",
     percentOfYourLife: "% of your life.",
@@ -14,7 +15,8 @@ const messages = {
   pl: {
     yourAge: "Twój wiek:",
     desiredLifespan: "Pożądana długość życia (lata):",
-    lifeIsPrecious: "ŻYCIE JEST CENNE\nUCZYŃ JE BARDZIEJ ZNACZĄCYM",
+    lifeIsPrecious: "ŻYCIE JEST CENNE",
+    makeItMoreMeaningful: "UCZYŃ JE BARDZIEJ ZNACZĄCYM",
     weeks: "tygodni",
     youHaveLived: "Przeżyłeś",
     percentOfYourLife: "% swojego życia.",
@@ -23,7 +25,8 @@ const messages = {
   es: {
     yourAge: "Tu edad:",
     desiredLifespan: "Duración de vida deseada (años):",
-    lifeIsPrecious: "LA VIDA ES PRECIOSA\nHAZLA MÁS SIGNIFICATIVA",
+    lifeIsPrecious: "LA VIDA ES PRECIOSA",
+    makeItMoreMeaningful: "HAZLA MÁS SIGNIFICATIVA",
     weeks: "semanas",
     youHaveLived: "Has vivido",
     percentOfYourLife: "% de tu vida.",
@@ -32,7 +35,8 @@ const messages = {
   fr: {
     yourAge: "Votre âge:",
     desiredLifespan: "Durée de vie souhaitée (années):",
-    lifeIsPrecious: "LA VIE EST PRÉCIEUSE\nRENDEZ-LA PLUS SIGNIFICATIVE",
+    lifeIsPrecious: "LA VIE EST PRÉCIEUSE",
+    makeItMoreMeaningful: "RENDEZ-LA PLUS SIGNIFICATIVE",
     weeks: "semaines",
     youHaveLived: "Vous avez vécu",
     percentOfYourLife: "% de votre vie.",
@@ -41,7 +45,8 @@ const messages = {
   hi: {
     yourAge: "आपकी उम्र:",
     desiredLifespan: "वांछित आयु (वर्ष):",
-    lifeIsPrecious: "जीवन अनमोल है\nइसे और अधिक सार्थक बनाएं",
+    lifeIsPrecious: "जीवन अनमोल है",
+    makeItMoreMeaningful: "\इसे और अधिक सार्थक बनाएं",
     weeks: "सप्ताह",
     youHaveLived: "आपने अपने जीवन का",
     percentOfYourLife: "% हिस्सा जी लिया है।",

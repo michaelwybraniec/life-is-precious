@@ -1,5 +1,10 @@
 <template>
-  <div class="container">
+  <div class="center">
+    <b>{{ $t('lifeIsPrecious') }}</b
+    ><br />
+    <b>{{ $t('makeItMoreMeaningful') }}</b>
+  </div>
+  <div id="header-container">
     <div class="left">
       <label for="age" class="hide-while-printing">{{ $t('yourAge') }}</label>
       <input
@@ -8,35 +13,35 @@
         v-model.number="myLife.age"
         max="110"
         class="hide-while-printing"
-        style="width: 40px"
-      /><br class="hide-while-printing" />
+        style="width: 40px; margin-left: 5px; border: 2px solid green"
+      />
+      <br class="hide-while-printing" />
       <label for="lifespan">{{ $t('desiredLifespan') }}</label>
+
       <input
         type="number"
         id="lifespan"
         v-model.number="myLife.desiredLifeSpan"
         max="110"
-        disabled
-        style="width: 40px"
+        style="width: 40px; margin-left: 5px"
       />
     </div>
-    <div class="center">
-      <b>{{ $t('lifeIsPrecious') }}</b>
-    </div>
+
     <div class="right">
       <p>
-        {{ myLife.desiredLifeSpan }} {{ $t('weeks') }} x {{ weeksPerYear }} {{ $t('weeks') }}/{{ $t('weeks') }} =
-        {{ totalWeeksOfLife }} {{ $t('weeks') }}.<br />
+        {{ myLife.desiredLifeSpan }} {{ $t('weeks') }} x {{ weeksPerYear }}
+        {{ $t('weeks') }}/{{ $t('weeks') }} = {{ totalWeeksOfLife }}
+        {{ $t('weeks') }}.<br class="hide-while-printing" />
         <span class="hide-while-printing">
-          {{ $t('youHaveLived') }} <b>{{ lifePercentage.toFixed(2) }}%</b> {{ $t('percentOfYourLife') }}
+          {{ $t('youHaveLived') }} <b>{{ lifePercentage.toFixed(2) }}%</b>
+          {{ $t('percentOfYourLife') }}
         </span>
       </p>
     </div>
   </div>
-  <button @click="printPage" class="hide-while-printing print-button">
-    Print
-  </button>
-  <div class="language-selector">
+  <div id="tools-container">
+
+    <div class="language-selector  hide-while-printing">
       <select v-model="currentLocale" @change="changeLanguage">
         <option value="en">🇺🇸 English</option>
         <option value="pl">🇵🇱 Polski</option>
@@ -45,7 +50,11 @@
         <option value="hi">🇮🇳 हिंदी</option>
       </select>
     </div>
-  <div id="checkboxes">
+    <button @click="printPage" class="hide-while-printing print-button">
+      🖨️ Print
+    </button>
+  </div>
+  <div id="squares-container">
     <div v-for="(chunk, row) in weeksChunks" :key="row" class="row">
       <div class="row-number">{{ row + 1 }}</div>
       <div class="week-boxes" :class="{ 'tenth-chunk': (row + 1) % 10 === 0 }">
@@ -62,9 +71,7 @@
       </div>
     </div>
   </div>
-  <footer class="footer-quote">
-    "{{ $t('lifeIsNow') }}"
-  </footer>
+  <footer class="footer-quote">"{{ $t('lifeIsNow') }}"</footer>
 </template>
 
 <script setup lang="ts">
@@ -136,46 +143,99 @@ function changeLanguage() {
 </script>
 
 <style scoped>
-.container {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding-bottom: 10px;
-  align-items: center;
+@media (max-width: 768px) {
+  #header-container {
+    flex-direction: column;
+    text-align: center;
+    max-width: 100%; /* Allow full width on smaller screens */
+  }
+
+  .left,
+  .center,
+  .right {
+    flex: 1 0 100%;
+    text-align: center;
+    width: 100%; /* Full width for mobile */
+  }
+  
+  .week-boxes {
+    justify-content: center;
+  }
+}
+
+
+.print-button {
+  padding: 5px 12px 8px;
+  margin-left: 5px;
+  font-size: 14px;
+  border-radius: 5px;
+  border: solid 0px grey;
+  cursor: pointer;
+  background-color: black;
 }
 
 .language-selector {
-  display: flex;
-  justify-content: flex-end;
-  align-items: center;
-  margin-bottom: 20px;
-  padding: 10px;
+  padding: 7px 12px;
+  margin-left: 5px;
+  font-size: 14px;
+  border-radius: 5px;
+  border: solid 0px grey;
+  cursor: pointer;
+  background-color: black;
 }
 
 .language-selector select {
-  padding: 5px;
+  padding-top: 3px;
   font-size: 14px;
-  border: 1px solid #ccc;
-  border-radius: 4px;
+  border-radius: 5px;
+  border: solid 0px grey;
   cursor: pointer;
+  background-color: black;
 }
 
-.language-selector select:focus {
-  outline: none;
-  border-color: #5f985e;
+#header-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 0;
+  max-width: 1200px; /* Set a max-width for larger screens */
+  margin: 0 auto; /* Center align the container */
+}
+
+#tools-container {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
 }
 
 .left {
+  min-width: 180px; /* Prevents columns from becoming too narrow */
   flex: 1;
   text-align: left;
 }
+
+.center {
+  min-width: 180px; /* Prevents columns from becoming too narrow */
+  flex: 1;
+}
+
+
+.right {
+  min-width: 180px; /* Prevents columns from becoming too narrow */
+  flex: 1;
+  text-align: right;
+}
+
+.left input,
+.right input,
+.left label,
+.right label {
+  width: 100%; /* Ensures inputs and labels do not overflow their containers */
+}
+
 .center {
   flex: 1;
   text-align: center;
-}
-.right {
-  flex: 1;
-  text-align: right;
 }
 
 .right {
@@ -183,7 +243,8 @@ function changeLanguage() {
   flex-direction: column;
   align-items: flex-end;
 }
-#checkboxes {
+
+#squares-container {
   margin-top: 20px;
   display: flex;
   flex-direction: column;
@@ -218,7 +279,7 @@ function changeLanguage() {
   margin-left: 5px;
 }
 input[type='checkbox'] {
-  display: none; /* Hide the actual checkboxes */
+  display: none; /* Hide the actual squares-container */
 }
 @media print {
   @page {
@@ -249,8 +310,5 @@ input[type='checkbox'] {
   text-align: center;
   padding-top: 10px;
   font-size: 10px;
-}
-.print-button {
-  margin-bottom: 5px;
 }
 </style>
