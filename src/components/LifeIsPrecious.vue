@@ -2,7 +2,7 @@
   <div id="banner">
     <b>{{ $t('lifeIsPrecious') }}</b
     ><br />
-    <b>{{ $t('makeItMoreMeaningful') }}</b>
+    <b>{{ $t('makeItMoreMeaningful') }}</b> v{{ appVersion }}
   </div>
   <div id="header-container">
     <div class="left">
@@ -124,6 +124,7 @@ interface LifeData {
 }
 
 // VARIABLES
+const appVersion = import.meta.env.VITE_APP_VERSION
 const myLife: Ref<LifeData> = ref({
   desiredAge: 30,
   desiredLifeSpan: 85,

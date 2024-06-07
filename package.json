@@ -1,7 +1,10 @@
 {
   "name": "life-is-precious",
+  "author": "Michael Wybraniec",
+  "description": "Simple app visualizing lifespan with functionality to print a poster.",
   "private": true,
-  "version": "0.0.0",
+  "license": "MIT",
+  "version": "0.2",
   "type": "module",
   "scripts": {
     "dev": "vite",
