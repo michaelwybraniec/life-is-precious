@@ -1,8 +1,8 @@
 <template>
   <div id="banner">
-    <b>{{ $t('lifeIsPrecious') }}</b
+    <b>{{ t('lifeIsPrecious') }}</b
     ><br />
-    <b>{{ $t('makeItMoreMeaningful') }}</b> v{{ appVersion }}
+    <b>{{ t('makeItMoreMeaningful') }}</b> v{{ appVersion }}
   </div>
   <div id="header-container">
     <div class="left">
@@ -10,7 +10,7 @@
         <label
           for="desiredAge"
           class="hide-for-printing"
-          >{{ $t('yourAge') }}</label
+          >{{ t('yourAge') }}</label
         >
         <input
           type="number"
@@ -31,7 +31,7 @@
         />
       </div>
       <div>
-        <label for="lifespan">{{ $t('desiredLifespan') }}</label>
+        <label for="lifespan">{{ t('desiredLifespan') }}</label>
         <input
           type="number"
           id="lifespan"
@@ -52,23 +52,42 @@
       </div>
       <div v-if="inputWarning">
         <p class="warning">
-          {{ $t('inputWarning') }}
+          {{ t('inputWarning') }}
         </p>
       </div>
     </div>
     <div class="right">
       <div>
-        {{ myLife.desiredLifeSpan }} {{ $t('weeks') }} x {{ weeksPerYear }}
-        {{ $t('weeks') }}/{{ $t('weeks') }} = {{ totalWeeksOfLife }}
-        {{ $t('weeks') }}
+        <!-- <p>
+        {{ myLife.desiredLifeSpan }} years x {{ weeksPerYear }} weeks/year =
+        {{ totalWeeksOfLife }} weeks.<br />
+        <span class="hide-while-printing">
+          You have lived <b>{{ lifePercentage.toFixed(2) }}%</b> of your life.
+        </span>
+      </p> -->
+        {{ myLife.desiredLifeSpan }} {{ t('years') }} x {{ weeksPerYear }}
+        {{ t('weeks') }}/{{ t('year') }} = {{ totalWeeksOfLife }}
+        {{ t('weeks') }}
       </div>
       <div class="hide-for-printing">
-        {{ $t('youHaveLived') }} <b>{{ lifePercentage.toFixed(2) }}%</b>
-        {{ $t('percentOfYourLife') }}
+        {{ t('youHaveLived') }} <b>{{ lifePercentage.toFixed(2) }}%</b>
+        {{ t('percentOfYourLife') }}
       </div>
     </div>
   </div>
   <div id="tools-container">
+    <div class="color-selector hide-for-printing">
+      <label for="colorMode">{{ t('colorMode') }}</label>
+      <select
+        id="colorMode"
+        v-model="colorMode"
+        @change="changeColorMode"
+      >
+        <option value="default">{{ t('default') }}</option>
+        <option value="techno">{{ t('techno') }}</option>
+        <option value="disco">{{ t('disco') }}</option>
+      </select>
+    </div>
     <div class="language-selector hide-for-printing">
       <select
         v-model="currentLocale"
@@ -108,97 +127,134 @@
             unchecked: week > myLife.desiredAge * weeksPerYear,
             'extra-margin': index % 4 === 0,
           }"
+          :style="weekBoxStyle()"
         ></div>
       </div>
     </div>
   </div>
-  <footer class="footer-quote">{{ $t('lifeIsNow') }}</footer>
+  <footer class="footer-quote">{{ t('lifeIsNow') }}</footer>
 </template>
 
 <script setup lang="ts">
-import { computed, ref, Ref } from 'vue'
-import { useI18n } from 'vue-i18n'
+import { computed, ref, Ref, onMounted, onUnmounted } from 'vue';
+import { useI18n } from 'vue-i18n';
 interface LifeData {
-  desiredAge: number
-  desiredLifeSpan: number
+  desiredAge: number;
+  desiredLifeSpan: number;
 }
 
 // VARIABLES
-const appVersion = import.meta.env.VITE_APP_VERSION
+const appVersion = import.meta.env.VITE_APP_VERSION;
 const myLife: Ref<LifeData> = ref({
   desiredAge: 30,
   desiredLifeSpan: 85,
-})
-const weeksPerYear: number = 52
-const minLifeSpan: number = 0
-const maxLifeSpan: number = 85
-const minAge: number = 0
-const maxAge: number = 85
-const inputWarning = ref(false)
-const { locale } = useI18n()
-const currentLocale = ref(locale.value)
+});
+const weeksPerYear: number = 52;
+const minLifeSpan: number = 0;
+const maxLifeSpan: number = 85;
+const minAge: number = 0;
+const maxAge: number = 85;
+const inputWarning = ref(false);
+const { t, locale } = useI18n();
+const currentLocale = ref(locale.value);
+const colorMode = ref('default');
+let intervalId: number | null = null;
 
 // FUNCTIONS
 const totalWeeksOfLife = computed(
   () => weeksPerYear * myLife.value.desiredLifeSpan,
-)
+);
 const weeksChunks = computed(() => {
   const weeks: number[] = Array.from(
     { length: totalWeeksOfLife.value },
     (_, i) => i + 1,
-  )
-  const chunks: number[][] = []
+  );
+  const chunks: number[][] = [];
   for (let i = 0; i < weeks.length; i += weeksPerYear) {
-    chunks.push(weeks.slice(i, i + weeksPerYear))
+    chunks.push(weeks.slice(i, i + weeksPerYear));
   }
-  return chunks
-})
+  return chunks;
+});
 const lifePercentage = computed(() => {
-  return (myLife.value.desiredAge / myLife.value.desiredLifeSpan) * 100
-})
-const printPage = () => window.print()
-const changeLanguage = () => (locale.value = currentLocale.value)
-
+  return (myLife.value.desiredAge / myLife.value.desiredLifeSpan) * 100;
+});
+const printPage = () => window.print();
+const changeLanguage = () => (locale.value = currentLocale.value);
 const isBetween = (value: number, min: number, max: number) => {
-  return value >= min && value <= max
-}
-
+  return value >= min && value <= max;
+};
 const validateDesiredAge = (event: Event) => {
-  const target = event.target as HTMLInputElement
-  const value = parseInt(target.value, 10)
+  const target = event.target as HTMLInputElement;
+  const value = parseInt(target.value, 10);
   if (!isBetween(value, minAge, maxAge)) {
-    inputWarning.value = true
-    if (value < minAge) myLife.value.desiredAge = minAge
-    else if (value > maxAge) myLife.value.desiredAge = maxAge
-    else if (isNaN(value)) myLife.value.desiredAge = minAge
+    inputWarning.value = true;
+    if (value < minAge) myLife.value.desiredAge = minAge;
+    else if (value > maxAge) myLife.value.desiredAge = maxAge;
+    else if (isNaN(value)) myLife.value.desiredAge = minAge;
   } else {
-    inputWarning.value = false
-    myLife.value.desiredAge = value
+    inputWarning.value = false;
+    myLife.value.desiredAge = value;
     // Age cannot be higher than desired lifespan
     if (myLife.value.desiredLifeSpan < value) {
-      myLife.value.desiredLifeSpan = value
+      myLife.value.desiredLifeSpan = value;
     }
   }
-}
-
+};
 const validateLifeSpan = (event: Event) => {
-  const target = event.target as HTMLInputElement
-  const value = parseInt(target.value, 10)
+  const target = event.target as HTMLInputElement;
+  const value = parseInt(target.value, 10);
   if (!isBetween(value, minLifeSpan, maxLifeSpan)) {
-    console.log(value)
-    inputWarning.value = true
-    if (value < minLifeSpan) myLife.value.desiredLifeSpan = minLifeSpan
-    else if (isNaN(value)) myLife.value.desiredLifeSpan = minLifeSpan
-    else if (value > maxLifeSpan) myLife.value.desiredLifeSpan = maxLifeSpan
+    console.log(value);
+    inputWarning.value = true;
+    if (value < minLifeSpan) myLife.value.desiredLifeSpan = minLifeSpan;
+    else if (isNaN(value)) myLife.value.desiredLifeSpan = minLifeSpan;
+    else if (value > maxLifeSpan) myLife.value.desiredLifeSpan = maxLifeSpan;
   } else {
-    inputWarning.value = false
-    myLife.value.desiredLifeSpan = value
+    inputWarning.value = false;
+    myLife.value.desiredLifeSpan = value;
     // Desired lifespan cannot be shorter than age
     if (myLife.value.desiredLifeSpan < myLife.value.desiredAge) {
-      myLife.value.desiredAge = 0
+      myLife.value.desiredAge = 0;
     }
   }
-}
+};
+const weekBoxStyle = () => {
+  if (colorMode.value === 'techno') {
+    return {
+      animation: 'techno-blink 1s infinite',
+    };
+  }
+  if (colorMode.value === 'disco') {
+    return {
+      animation: 'disco-ball 5s infinite',
+    };
+  }
+  return {};
+};
+const changeColorMode = () => {
+  if (intervalId) {
+    clearInterval(intervalId);
+    intervalId = null;
+  }
+  if (colorMode.value === 'techno') {
+    intervalId = window.setInterval(() => {
+      document.querySelectorAll('.week-box').forEach((box) => {
+        box.classList.toggle('techno');
+      });
+    }, 500);
+  }
+  if (colorMode.value === 'disco') {
+    intervalId = window.setInterval(() => {
+      document.querySelectorAll('.week-box').forEach((box) => {
+        box.classList.toggle('disco');
+      });
+    }, 100);
+  }
+};
+onMounted(() => changeColorMode());
+onUnmounted(() => {
+  if (intervalId) clearInterval(intervalId);
+});
 </script>
 
 <style scoped>
@@ -340,5 +396,43 @@ body {
   padding-top: 10px;
   padding-bottom: 0px;
   font-size: 10px;
+}
+@keyframes techno-blink {
+  0%,
+  100% {
+    background-color: #ff0000;
+  }
+  25% {
+    background-color: #00ff00;
+  }
+  50% {
+    background-color: #0000ff;
+  }
+  75% {
+    background-color: #ffff00;
+  }
+}
+@keyframes disco-ball {
+  0% {
+    background-color: #ff0000;
+  }
+  25% {
+    background-color: #00ff00;
+  }
+  50% {
+    background-color: #0000ff;
+  }
+  75% {
+    background-color: #ffff00;
+  }
+  100% {
+    background-color: #ff0000;
+  }
+}
+.week-box.techno {
+  animation: techno-blink 1s infinite;
+}
+.week-box.disco {
+  animation: disco-ball 1s infinite;
 }
 </style>

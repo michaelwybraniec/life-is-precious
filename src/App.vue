@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import LifeIsPrecious from './components/LifeIsPrecious.vue'
+import LifeIsPrecious from './components/LifeIsPrecious.vue';
 </script>
 
 <template>
