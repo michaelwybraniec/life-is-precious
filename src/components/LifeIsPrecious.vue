@@ -1,17 +1,13 @@
 <template>
   <div id="banner">
-    <b>{{ t('lifeIsPrecious') }}</b
+    <b>{{ t("lifeIsPrecious") }}</b
     ><br />
-    <b>{{ t('makeItMoreMeaningful') }}</b> v{{ appVersion }}
+    <b>{{ t("makeItMoreMeaningful") }}</b> <small>v.{{ appVersion }}</small>
   </div>
   <div id="header-container">
     <div class="left">
       <div class="hide-for-printing">
-        <label
-          for="desiredAge"
-          class="hide-for-printing"
-          >{{ t('yourAge') }}</label
-        >
+        <label for="desiredAge" class="hide-for-printing">{{ t("yourAge") }}</label>
         <input
           type="number"
           id="desiredAge"
@@ -31,7 +27,7 @@
         />
       </div>
       <div>
-        <label for="lifespan">{{ t('desiredLifespan') }}</label>
+        <label for="lifespan">{{ t("desiredLifespan") }}</label>
         <input
           type="number"
           id="lifespan"
@@ -52,47 +48,40 @@
       </div>
       <div v-if="inputWarning">
         <p class="warning">
-          {{ t('inputWarning') }}
+          {{ t("inputWarning") }}
         </p>
       </div>
     </div>
     <div class="right">
       <div>
-        <!-- <p>
-        {{ myLife.desiredLifeSpan }} years x {{ weeksPerYear }} weeks/year =
-        {{ totalWeeksOfLife }} weeks.<br />
-        <span class="hide-while-printing">
-          You have lived <b>{{ lifePercentage.toFixed(2) }}%</b> of your life.
-        </span>
-      </p> -->
-        {{ myLife.desiredLifeSpan }} {{ t('years') }} x {{ weeksPerYear }}
-        {{ t('weeks') }}/{{ t('year') }} = {{ totalWeeksOfLife }}
-        {{ t('weeks') }}
+        {{ myLife.desiredLifeSpan }} {{ t("years") }} x {{ weeksPerYear }}
+        {{ t("weeks") }}/{{ t("year") }} = {{ totalWeeksOfLife }}
+        {{ t("weeks") }}
       </div>
       <div class="hide-for-printing">
-        {{ t('youHaveLived') }} <b>{{ lifePercentage.toFixed(2) }}%</b>
-        {{ t('percentOfYourLife') }}
+        {{ t("youHaveLived") }} <b>{{ lifePercentage.toFixed(2) }}%</b>
+        {{ t("percentOfYourLife") }}
       </div>
     </div>
   </div>
   <div id="tools-container">
-    <div class="color-selector hide-for-printing">
-      <label for="colorMode">{{ t('colorMode') }}</label>
+    <div class="hide-for-printing">
+      <span v-if="colorMode === 'techno'">{{ t("handsClap") }}</span>
+    </div>
+    <div class="hide-for-printing">
       <select
+        class="color-mode-selector"
         id="colorMode"
         v-model="colorMode"
         @change="changeColorMode"
       >
-        <option value="default">{{ t('default') }}</option>
-        <option value="techno">{{ t('techno') }}</option>
-        <option value="disco">{{ t('disco') }}</option>
+        <option value="default">🩶 {{ t("default") }}</option>
+        <option value="techno">⚡ {{ t("techno") }}</option>
+        <option value="disco">💃 {{ t("disco") }}</option>
       </select>
     </div>
-    <div class="language-selector hide-for-printing">
-      <select
-        v-model="currentLocale"
-        @change="changeLanguage"
-      >
+    <div class="hide-for-printing">
+      <select class="language-selector" v-model="currentLocale" @change="changeLanguage">
         <option value="en">🇺🇸 English</option>
         <option value="pl">🇵🇱 Polski</option>
         <option value="es">🇪🇸 Español</option>
@@ -100,24 +89,12 @@
         <option value="hi">🇮🇳 हिंदी</option>
       </select>
     </div>
-    <button
-      @click="printPage"
-      class="hide-for-printing print-button"
-    >
-      🖨️ Print
-    </button>
+    <button @click="printPage" class="hide-for-printing print-button">🖨️ Print</button>
   </div>
   <div id="squares-container">
-    <div
-      v-for="(chunk, row) in weeksChunks"
-      :key="row"
-      class="row"
-    >
+    <div v-for="(chunk, row) in weeksChunks" :key="row" class="row">
       <div class="row-number">{{ row + 1 }}</div>
-      <div
-        class="week-boxes"
-        :class="{ 'tenth-chunk': (row + 1) % 10 === 0 }"
-      >
+      <div class="week-boxes" :class="{ 'tenth-chunk': (row + 1) % 10 === 0 }">
         <div
           v-for="(week, index) in chunk"
           :key="week"
@@ -126,18 +103,19 @@
             checked: week <= myLife.desiredAge * weeksPerYear,
             unchecked: week > myLife.desiredAge * weeksPerYear,
             'extra-margin': index % 4 === 0,
+            techno: colorMode === 'techno',
+            disco: colorMode === 'disco',
           }"
-          :style="weekBoxStyle()"
         ></div>
       </div>
     </div>
   </div>
-  <footer class="footer-quote">{{ t('lifeIsNow') }}</footer>
+  <footer class="footer-quote">{{ t("lifeIsNow") }}</footer>
 </template>
 
 <script setup lang="ts">
-import { computed, ref, Ref, onMounted, onUnmounted } from 'vue';
-import { useI18n } from 'vue-i18n';
+import { computed, ref, Ref, watchEffect, onMounted, onUnmounted } from "vue";
+import { useI18n } from "vue-i18n";
 interface LifeData {
   desiredAge: number;
   desiredLifeSpan: number;
@@ -157,18 +135,11 @@ const maxAge: number = 85;
 const inputWarning = ref(false);
 const { t, locale } = useI18n();
 const currentLocale = ref(locale.value);
-const colorMode = ref('default');
-let intervalId: number | null = null;
 
 // FUNCTIONS
-const totalWeeksOfLife = computed(
-  () => weeksPerYear * myLife.value.desiredLifeSpan,
-);
+const totalWeeksOfLife = computed(() => weeksPerYear * myLife.value.desiredLifeSpan);
 const weeksChunks = computed(() => {
-  const weeks: number[] = Array.from(
-    { length: totalWeeksOfLife.value },
-    (_, i) => i + 1,
-  );
+  const weeks: number[] = Array.from({ length: totalWeeksOfLife.value }, (_, i) => i + 1);
   const chunks: number[][] = [];
   for (let i = 0; i < weeks.length; i += weeksPerYear) {
     chunks.push(weeks.slice(i, i + weeksPerYear));
@@ -218,42 +189,89 @@ const validateLifeSpan = (event: Event) => {
     }
   }
 };
-const weekBoxStyle = () => {
-  if (colorMode.value === 'techno') {
-    return {
-      animation: 'techno-blink 1s infinite',
+
+// COLOR MODES
+const colorMode = ref("default");
+const audioLevel = ref(0);
+let audioContext: AudioContext | null = null;
+let analyser: AnalyserNode | null = null;
+const startAudioProcessing = async () => {
+  try {
+    const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+    audioContext = new (window.AudioContext || (window as any).webkitAudioContext)();
+    analyser = audioContext.createAnalyser();
+    const source = audioContext.createMediaStreamSource(stream);
+    source.connect(analyser);
+    analyser.fftSize = 256;
+    const dataArray = new Uint8Array(analyser.frequencyBinCount);
+    const getAverageVolume = (array: Uint8Array) => {
+      const length = array.length;
+      let values = 0;
+      for (let i = 0; i < length; i++) {
+        values += array[i];
+      }
+      return values / length;
     };
-  }
-  if (colorMode.value === 'disco') {
-    return {
-      animation: 'disco-ball 5s infinite',
+    const updateAudioLevel = () => {
+      if (analyser) {
+        analyser.getByteFrequencyData(dataArray);
+        audioLevel.value = getAverageVolume(dataArray) / 255;
+        // console.log("Audio Level:", audioLevel.value); // Log the audio level
+        const boxes = document.querySelectorAll(".week-box.techno");
+        const intensity = Math.max(0.2, audioLevel.value * 6); // Start at 20% and increase responsiveness
+        boxes.forEach((box, index) => {
+          const element = box as HTMLElement;
+          const factor = (index + 1) / boxes.length; // Scale factor based on index
+          const scaledIntensity = intensity * factor;
+          element.style.backgroundColor = `rgba(255, 255, 255, ${scaledIntensity})`;
+          element.style.border = `1px solid rgba(0, 0, 0, ${1 - scaledIntensity})`; // Less visible border
+        });
+        requestAnimationFrame(updateAudioLevel);
+      }
     };
-  }
-  return {};
-};
-const changeColorMode = () => {
-  if (intervalId) {
-    clearInterval(intervalId);
-    intervalId = null;
-  }
-  if (colorMode.value === 'techno') {
-    intervalId = window.setInterval(() => {
-      document.querySelectorAll('.week-box').forEach((box) => {
-        box.classList.toggle('techno');
-      });
-    }, 500);
-  }
-  if (colorMode.value === 'disco') {
-    intervalId = window.setInterval(() => {
-      document.querySelectorAll('.week-box').forEach((box) => {
-        box.classList.toggle('disco');
-      });
-    }, 100);
+    updateAudioLevel();
+  } catch (err) {
+    console.error("Error accessing microphone:", err);
   }
 };
-onMounted(() => changeColorMode());
+const resetWeekBoxStyles = () => {
+  document.querySelectorAll(".week-box").forEach((box) => {
+    const element = box as HTMLElement;
+    element.style.backgroundColor = "";
+    element.style.border = "";
+  });
+};
+watchEffect(() => {
+  if (colorMode.value === "techno") {
+    startAudioProcessing();
+  } else {
+    resetWeekBoxStyles();
+    if (audioContext) {
+      audioContext.close();
+      audioContext = null;
+      analyser = null;
+    }
+  }
+  document.querySelectorAll(".week-box").forEach((box) => {
+    box.classList.remove("techno", "disco");
+    if (colorMode.value === "techno") {
+      box.classList.add("techno");
+    } else if (colorMode.value === "disco") {
+      box.classList.add("disco");
+    }
+  });
+});
+
+onMounted(() => {
+  if (colorMode.value === "techno") {
+    startAudioProcessing();
+  }
+});
+
 onUnmounted(() => {
-  if (intervalId) clearInterval(intervalId);
+  if (audioContext) {
+    audioContext.close();
+  }
 });
 </script>
 
@@ -324,16 +342,17 @@ body {
 }
 .print-button {
   padding: 5px 12px 8px;
-  margin-left: 5px;
+  margin-left: 10px;
   font-size: 14px;
   border-radius: 5px;
   border: solid 0px grey;
   cursor: pointer;
   background-color: black;
 }
+
 .language-selector {
-  padding: 7px 12px;
-  margin-left: 5px;
+  padding: 7px;
+  margin-left: 10px;
   font-size: 14px;
   border-radius: 5px;
   border: solid 0px grey;
@@ -341,6 +360,23 @@ body {
   background-color: black;
 }
 .language-selector select {
+  padding-top: 3px;
+  font-size: 14px;
+  border-radius: 5px;
+  border: solid 0px grey;
+  cursor: pointer;
+  background-color: black;
+}
+.color-mode-selector {
+  padding: 7px;
+  margin-left: 10px;
+  font-size: 14px;
+  border-radius: 5px;
+  border: solid 0px grey;
+  cursor: pointer;
+  background-color: black;
+}
+.color-mode-selector select {
   padding-top: 3px;
   font-size: 14px;
   border-radius: 5px;
@@ -383,10 +419,10 @@ body {
   height: 7px;
   margin: 1px;
   /* padding-left: 2px; */
-  border: 1px solid #5f985e;
+  border: 1px solid rgb(173, 173, 173);
 }
 .week-box.checked {
-  background-color: #5f985e;
+  background-color: rgb(173, 173, 173);
 }
 .week-box.extra-margin {
   margin-left: 5px;
@@ -397,42 +433,33 @@ body {
   padding-bottom: 0px;
   font-size: 10px;
 }
-@keyframes techno-blink {
-  0%,
-  100% {
-    background-color: #ff0000;
-  }
-  25% {
-    background-color: #00ff00;
-  }
-  50% {
-    background-color: #0000ff;
-  }
-  75% {
-    background-color: #ffff00;
-  }
-}
 @keyframes disco-ball {
   0% {
     background-color: #ff0000;
   }
-  25% {
-    background-color: #00ff00;
+  16.67% {
+    background-color: #9900ff;
   }
-  50% {
+  33.33% {
     background-color: #0000ff;
   }
-  75% {
-    background-color: #ffff00;
+  50% {
+    background-color: #ff00e1;
+  }
+  66.67% {
+    background-color: #ff00ff;
+  }
+  83.33% {
+    background-color: #0044ff;
   }
   100% {
-    background-color: #ff0000;
+    background-color: #15ff00;
   }
 }
-.week-box.techno {
-  animation: techno-blink 1s infinite;
-}
 .week-box.disco {
-  animation: disco-ball 1s infinite;
+  animation: disco-ball 0.5s infinite;
+}
+.week-box.checked.disco {
+  animation: disco-ball 0.5s infinite reverse;
 }
 </style>

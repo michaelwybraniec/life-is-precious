@@ -10,7 +10,12 @@
     "youHaveLived": "You have lived",
     "percentOfYourLife": "% of your life",
     "lifeIsNow": "LIFE IS NOW / All rights reserved by ONE-FRONT.",
-    "inputWarning": "Choose a number from 0 to 85 please 😊"
+    "inputWarning": "Choose a number from 0 to 85 please 😊",
+    "disco": "Life is Disco!",
+    "techno":"Let's Rave!",
+    "default": "Default mode",
+    "handsClap": "Clap your hands!"
+
   },
   "pl": {
     "yourAge": "Twój wiek:",
@@ -23,7 +28,11 @@
     "youHaveLived": "Przeżyłeś",
     "percentOfYourLife": "% swojego życia",
     "lifeIsNow": "ŻYCIE JEST TERAZ / Wszystkie prawa zastrzeżone przez ONE-FRONT.",
-    "inputWarning": "Proszę wybrać liczbę od 0 do 85 😊"
+    "inputWarning": "Proszę wybrać liczbę od 0 do 85 😊",
+    "disco":"Życie to Dyskoteka!",
+    "techno":"Zabłyśnijmy!",
+    "default": "Tryb domyślny",
+    "handsClap": "Klaszcz w dlonie!"
   },
   "es": {
     "yourAge": "Tu edad:",
@@ -36,7 +45,12 @@
     "youHaveLived": "Has vivido",
     "percentOfYourLife": "% de tu vida",
     "lifeIsNow": "LA VIDA ES AHORA / Todos los derechos reservados por ONE-FRONT.",
-    "inputWarning": "Elija un número del 0 al 85, por favor 😊"
+    "inputWarning": "Elija un número del 0 al 85, por favor 😊",
+    "disco":"La vida es Discoteca!",
+    "techno":"¡Vamos a delirar!",
+    "default": "Modo por defecto",
+    "handsClap": "¡Aplaude!"
+
   },
   "fr": {
     "yourAge": "Votre âge:",
@@ -49,7 +63,11 @@
     "youHaveLived": "Vous avez vécu",
     "percentOfYourLife": "% de votre vie",
     "lifeIsNow": "LA VIE C'EST MAINTENANT / Tous droits réservés par ONE-FRONT.",
-    "inputWarning": "Choisissez un nombre de 0 à 85, s'il vous plaît 😊"
+    "inputWarning": "Choisissez un nombre de 0 à 85, s'il vous plaît 😊",
+    "disco":"La vie est Disco!",
+    "techno":"Faisons 'Rave'!",
+    "default": "Mode par défaut",
+    "handsClap": "Tapez dans vos mains !"
   },
   "hi": {
     "yourAge": "आपकी उम्र:",
@@ -62,6 +80,10 @@
     "youHaveLived": "आपने अपने जीवन का",
     "percentOfYourLife": "% हिस्सा जी लिया है।",
     "lifeIsNow": "जीवन अभी है / सभी अधिकार ONE-FRONT द्वारा सुरक्षित हैं।",
-    "inputWarning": "कृपया 0 से 85 तक कोई संख्या चुनें 😊"
+    "inputWarning": "कृपया 0 से 85 तक कोई संख्या चुनें 😊",
+    "disco": "जीवन डिस्को है!",
+    "techno":"चलो 'बड़बड़ाना'!",
+    "default": "डिफ़ॉल्ट मोड",
+    "handsClap": "अपने हाथ से ताली बजाएं!"
   }
 }
