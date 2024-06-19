@@ -12,10 +12,9 @@
     "lifeIsNow": "LIFE IS NOW / All rights reserved by ONE-FRONT.",
     "inputWarning": "Choose a number from 0 to 85 please 😊",
     "disco": "Life is Disco!",
-    "techno":"Let's Rave!",
+    "techno": "Let's Rave!",
     "default": "Default mode",
     "handsClap": "Clap your hands!"
-
   },
   "pl": {
     "yourAge": "Twój wiek:",
@@ -29,8 +28,8 @@
     "percentOfYourLife": "% swojego życia",
     "lifeIsNow": "ŻYCIE JEST TERAZ / Wszystkie prawa zastrzeżone przez ONE-FRONT.",
     "inputWarning": "Proszę wybrać liczbę od 0 do 85 😊",
-    "disco":"Życie to Dyskoteka!",
-    "techno":"Zabłyśnijmy!",
+    "disco": "Życie to Dyskoteka!",
+    "techno": "Zabłyśnijmy!",
     "default": "Tryb domyślny",
     "handsClap": "Klaszcz w dlonie!"
   },
@@ -46,11 +45,10 @@
     "percentOfYourLife": "% de tu vida",
     "lifeIsNow": "LA VIDA ES AHORA / Todos los derechos reservados por ONE-FRONT.",
     "inputWarning": "Elija un número del 0 al 85, por favor 😊",
-    "disco":"La vida es Discoteca!",
-    "techno":"¡Vamos a delirar!",
+    "disco": "La vida es Discoteca!",
+    "techno": "¡Vamos a delirar!",
     "default": "Modo por defecto",
     "handsClap": "¡Aplaude!"
-
   },
   "fr": {
     "yourAge": "Votre âge:",
@@ -64,8 +62,8 @@
     "percentOfYourLife": "% de votre vie",
     "lifeIsNow": "LA VIE C'EST MAINTENANT / Tous droits réservés par ONE-FRONT.",
     "inputWarning": "Choisissez un nombre de 0 à 85, s'il vous plaît 😊",
-    "disco":"La vie est Disco!",
-    "techno":"Faisons 'Rave'!",
+    "disco": "La vie est Disco!",
+    "techno": "Faisons 'Rave'!",
     "default": "Mode par défaut",
     "handsClap": "Tapez dans vos mains !"
   },
@@ -82,7 +80,7 @@
     "lifeIsNow": "जीवन अभी है / सभी अधिकार ONE-FRONT द्वारा सुरक्षित हैं।",
     "inputWarning": "कृपया 0 से 85 तक कोई संख्या चुनें 😊",
     "disco": "जीवन डिस्को है!",
-    "techno":"चलो 'बड़बड़ाना'!",
+    "techno": "चलो 'बड़बड़ाना'!",
     "default": "डिफ़ॉल्ट मोड",
     "handsClap": "अपने हाथ से ताली बजाएं!"
   }

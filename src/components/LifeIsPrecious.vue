@@ -1,13 +1,17 @@
 <template>
   <div id="banner">
-    <b>{{ t("lifeIsPrecious") }}</b
+    <b>{{ t('lifeIsPrecious') }}</b
     ><br />
-    <b>{{ t("makeItMoreMeaningful") }}</b> <small>v.{{ appVersion }}</small>
+    <b>{{ t('makeItMoreMeaningful') }}</b> <small>v.{{ appVersion }}</small>
   </div>
   <div id="header-container">
     <div class="left">
       <div class="hide-for-printing">
-        <label for="desiredAge" class="hide-for-printing">{{ t("yourAge") }}</label>
+        <label
+          for="desiredAge"
+          class="hide-for-printing"
+          >{{ t('yourAge') }}</label
+        >
         <input
           type="number"
           id="desiredAge"
@@ -27,7 +31,7 @@
         />
       </div>
       <div>
-        <label for="lifespan">{{ t("desiredLifespan") }}</label>
+        <label for="lifespan">{{ t('desiredLifespan') }}</label>
         <input
           type="number"
           id="lifespan"
@@ -48,40 +52,43 @@
       </div>
       <div v-if="inputWarning">
         <p class="warning">
-          {{ t("inputWarning") }}
+          {{ t('inputWarning') }}
         </p>
       </div>
     </div>
     <div class="right">
       <div>
-        {{ myLife.desiredLifeSpan }} {{ t("years") }} x {{ weeksPerYear }}
-        {{ t("weeks") }}/{{ t("year") }} = {{ totalWeeksOfLife }}
-        {{ t("weeks") }}
+        {{ myLife.desiredLifeSpan }} {{ t('years') }} x {{ weeksPerYear }}
+        {{ t('weeks') }}/{{ t('year') }} = {{ totalWeeksOfLife }}
+        {{ t('weeks') }}
       </div>
       <div class="hide-for-printing">
-        {{ t("youHaveLived") }} <b>{{ lifePercentage.toFixed(2) }}%</b>
-        {{ t("percentOfYourLife") }}
+        {{ t('youHaveLived') }} <b>{{ lifePercentage.toFixed(2) }}%</b>
+        {{ t('percentOfYourLife') }}
       </div>
     </div>
   </div>
   <div id="tools-container">
     <div class="hide-for-printing">
-      <span v-if="colorMode === 'techno'">{{ t("handsClap") }}</span>
+      <span v-if="colorMode === 'techno'">{{ t('handsClap') }}</span>
     </div>
     <div class="hide-for-printing">
       <select
         class="color-mode-selector"
         id="colorMode"
         v-model="colorMode"
-        @change="changeColorMode"
       >
-        <option value="default">🩶 {{ t("default") }}</option>
-        <option value="techno">⚡ {{ t("techno") }}</option>
-        <option value="disco">💃 {{ t("disco") }}</option>
+        <option value="default">🩶 {{ t('default') }}</option>
+        <option value="techno">⚡ {{ t('techno') }}</option>
+        <option value="disco">💃 {{ t('disco') }}</option>
       </select>
     </div>
     <div class="hide-for-printing">
-      <select class="language-selector" v-model="currentLocale" @change="changeLanguage">
+      <select
+        class="language-selector"
+        v-model="currentLocale"
+        @change="changeLanguage"
+      >
         <option value="en">🇺🇸 English</option>
         <option value="pl">🇵🇱 Polski</option>
         <option value="es">🇪🇸 Español</option>
@@ -89,12 +96,24 @@
         <option value="hi">🇮🇳 हिंदी</option>
       </select>
     </div>
-    <button @click="printPage" class="hide-for-printing print-button">🖨️ Print</button>
+    <button
+      @click="printPage"
+      class="hide-for-printing print-button"
+    >
+      🖨️ Print
+    </button>
   </div>
   <div id="squares-container">
-    <div v-for="(chunk, row) in weeksChunks" :key="row" class="row">
+    <div
+      v-for="(chunk, row) in weeksChunks"
+      :key="row"
+      class="row"
+    >
       <div class="row-number">{{ row + 1 }}</div>
-      <div class="week-boxes" :class="{ 'tenth-chunk': (row + 1) % 10 === 0 }">
+      <div
+        class="week-boxes"
+        :class="{ 'tenth-chunk': (row + 1) % 10 === 0 }"
+      >
         <div
           v-for="(week, index) in chunk"
           :key="week"
@@ -110,12 +129,12 @@
       </div>
     </div>
   </div>
-  <footer class="footer-quote">{{ t("lifeIsNow") }}</footer>
+  <footer class="footer-quote">{{ t('lifeIsNow') }}</footer>
 </template>
 
 <script setup lang="ts">
-import { computed, ref, Ref, watchEffect, onMounted, onUnmounted } from "vue";
-import { useI18n } from "vue-i18n";
+import { computed, ref, Ref, watchEffect, onMounted, onUnmounted } from 'vue';
+import { useI18n } from 'vue-i18n';
 interface LifeData {
   desiredAge: number;
   desiredLifeSpan: number;
@@ -137,9 +156,14 @@ const { t, locale } = useI18n();
 const currentLocale = ref(locale.value);
 
 // FUNCTIONS
-const totalWeeksOfLife = computed(() => weeksPerYear * myLife.value.desiredLifeSpan);
+const totalWeeksOfLife = computed(
+  () => weeksPerYear * myLife.value.desiredLifeSpan,
+);
 const weeksChunks = computed(() => {
-  const weeks: number[] = Array.from({ length: totalWeeksOfLife.value }, (_, i) => i + 1);
+  const weeks: number[] = Array.from(
+    { length: totalWeeksOfLife.value },
+    (_, i) => i + 1,
+  );
   const chunks: number[][] = [];
   for (let i = 0; i < weeks.length; i += weeksPerYear) {
     chunks.push(weeks.slice(i, i + weeksPerYear));
@@ -191,14 +215,15 @@ const validateLifeSpan = (event: Event) => {
 };
 
 // COLOR MODES
-const colorMode = ref("default");
+const colorMode = ref('default');
 const audioLevel = ref(0);
 let audioContext: AudioContext | null = null;
 let analyser: AnalyserNode | null = null;
 const startAudioProcessing = async () => {
   try {
     const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
-    audioContext = new (window.AudioContext || (window as any).webkitAudioContext)();
+    audioContext = new (window.AudioContext ||
+      (window as any).webkitAudioContext)();
     analyser = audioContext.createAnalyser();
     const source = audioContext.createMediaStreamSource(stream);
     source.connect(analyser);
@@ -217,7 +242,7 @@ const startAudioProcessing = async () => {
         analyser.getByteFrequencyData(dataArray);
         audioLevel.value = getAverageVolume(dataArray) / 255;
         // console.log("Audio Level:", audioLevel.value); // Log the audio level
-        const boxes = document.querySelectorAll(".week-box.techno");
+        const boxes = document.querySelectorAll('.week-box.techno');
         const intensity = Math.max(0.2, audioLevel.value * 6); // Start at 20% and increase responsiveness
         boxes.forEach((box, index) => {
           const element = box as HTMLElement;
@@ -231,18 +256,18 @@ const startAudioProcessing = async () => {
     };
     updateAudioLevel();
   } catch (err) {
-    console.error("Error accessing microphone:", err);
+    console.error('Error accessing microphone:', err);
   }
 };
 const resetWeekBoxStyles = () => {
-  document.querySelectorAll(".week-box").forEach((box) => {
+  document.querySelectorAll('.week-box').forEach((box) => {
     const element = box as HTMLElement;
-    element.style.backgroundColor = "";
-    element.style.border = "";
+    element.style.backgroundColor = '';
+    element.style.border = '';
   });
 };
 watchEffect(() => {
-  if (colorMode.value === "techno") {
+  if (colorMode.value === 'techno') {
     startAudioProcessing();
   } else {
     resetWeekBoxStyles();
@@ -252,22 +277,20 @@ watchEffect(() => {
       analyser = null;
     }
   }
-  document.querySelectorAll(".week-box").forEach((box) => {
-    box.classList.remove("techno", "disco");
-    if (colorMode.value === "techno") {
-      box.classList.add("techno");
-    } else if (colorMode.value === "disco") {
-      box.classList.add("disco");
+  document.querySelectorAll('.week-box').forEach((box) => {
+    box.classList.remove('techno', 'disco');
+    if (colorMode.value === 'techno') {
+      box.classList.add('techno');
+    } else if (colorMode.value === 'disco') {
+      box.classList.add('disco');
     }
   });
 });
-
 onMounted(() => {
-  if (colorMode.value === "techno") {
+  if (colorMode.value === 'techno') {
     startAudioProcessing();
   }
 });
-
 onUnmounted(() => {
   if (audioContext) {
     audioContext.close();
