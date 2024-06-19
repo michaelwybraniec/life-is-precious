@@ -4,7 +4,7 @@
   "description": "Simple app visualizing lifespan with functionality to print a poster.",
   "private": true,
   "license": "MIT",
-  "version": "0.2",
+  "version": "0.3",
   "type": "module",
   "scripts": {
     "dev": "vite",
