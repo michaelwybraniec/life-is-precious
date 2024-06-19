@@ -31,11 +31,6 @@ jobs:
         git add .
         git commit -m "Deploy to GitHub Pages"
 
-    - name: Fetch and rebase remote changes
-      run: |
-        git fetch origin
-        git rebase origin/gh-pages
-
     - name: Push changes to new branch
       run: |
         git push origin gh-pages-update-${{ github.sha }}
