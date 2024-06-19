@@ -26,20 +26,26 @@ jobs:
 
     - name: Create new branch
       run: |
-        git checkout -b gh-pages-update
+        git checkout -b gh-pages-update-${{ github.sha }}
         cp -r dist/* .
         git add .
         git commit -m "Deploy to GitHub Pages"
 
+    - name: Fetch and merge remote changes
+      run: |
+        git fetch origin gh-pages
+        git checkout gh-pages-update-${{ github.sha }}
+        git merge origin/gh-pages --no-edit
+
     - name: Push changes to new branch
       run: |
-        git push origin gh-pages-update
+        git push origin gh-pages-update-${{ github.sha }}
 
     - name: Create Pull Request
       uses: peter-evans/create-pull-request@v3
       with:
         token: ${{ secrets.GITHUB_TOKEN }}
-        branch: gh-pages-update
+        branch: gh-pages-update-${{ github.sha }}
         base: gh-pages
         title: "Deploy to GitHub Pages"
         body: "This is an automated pull request to deploy the latest changes to GitHub Pages."
