@@ -31,12 +31,6 @@ jobs:
         git add .
         git commit -m "Deploy to GitHub Pages"
 
-    - name: Fetch and merge remote changes
-      run: |
-        git fetch origin gh-pages
-        git checkout gh-pages-update-${{ github.sha }}
-        git merge origin/gh-pages --no-edit
-
     - name: Push changes to new branch
       run: |
         git push origin gh-pages-update-${{ github.sha }}
